@@ -1,64 +1,69 @@
 <template>
     <div>
-    <!-- <p>tableList {{listData.length}}</p> -->
     <el-table :data="listData" stripe style="width: 100%">
-        <el-table-column v-for="item in colunms"
-        :prop="item.prop"
-        :label="item.title"
-        :key="item.title"
+        <el-table-column
+        prop="name"
+        label="歌曲标题"
         width="180">
-        </el-table-column>
+      </el-table-column>
+      <el-table-column
+        prop="id"
+        label="时长"
+        width="180">
+      </el-table-column>
+      <el-table-column
+        prop="ar[0].name"
+        label="歌手">
+      </el-table-column>
+      <el-table-column
+        prop="al.name"
+        label="专辑">
+      </el-table-column>
+    </el-table>
+    <el-pagination
+      background
+      @current-change="changePage"
+      layout="prev, pager, next"
+      :total="totalCount">
+    </el-pagination>
     </el-table>
     </div>
 </template>
 <script>
-import {formatDate} from './songSheet/date.js';
 export default{
   data(){
     return{
-      colunms:[
-        {
-            key: "company",
-            title: "播放",
-        },
-        {
-            key: "name",
-            title: "歌曲标题",
-        },
-        {
-            key: "id",
-            title: "时长",
-        },
-        {
-            key: "company",
-            title: "歌手",
-        },
-        {
-            key: "company",
-            title: "专辑",
-        }
-      ]
+        totalCount: 0,
+        currentPage: 1
     }
+  },
+
+  methods: {
+    changePage(currentPage){
+      this.currentPage = currentPage;
+      this.$http({
+        url:'https://api.imjad.cn/cloudmusic/',
+        method:'get',
+        params: {
+          type: 'playlist',
+          id: id,
+          offest: currentPage
+        }
+      }).then((res)=>{
+        this.subdesc=res.data.playlist;
+        this.sheepList=res.data.playlist.tracks;
+      })
+    }    
   },
 
   props:{
       listData:{
-          required: true,
-          default: () => {
-              return [];
-          }
+        required: true,
+      },
+      id:{
+         required: true, 
       }
   },
  
-  methods:{
-    
-  },
-
-  filters: {
-    formatDate(time) {
-      var date = new Date(time);
-      return formatDate(date, 'yyyy-MM-dd hh:mm');
-    }
-  }
 }
 </script>
