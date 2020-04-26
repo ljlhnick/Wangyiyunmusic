@@ -18,6 +18,12 @@ export function formatDate (date, fmt) {
     return fmt;
 };
 
+export function formatTime (millSeconds) {
+    let Mins = Math.floor(millSeconds/60000);
+    let Seconds = Math.floor((millSeconds - Mins*60000)/1000);
+    return `${Mins} min ${Seconds} s`;
+};
+
 function padLeftZero (str) {
     return ('00' + str).substr(str.length);
 };

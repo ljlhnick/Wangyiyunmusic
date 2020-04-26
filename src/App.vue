@@ -29,6 +29,7 @@
         <img class="img-circle" src="./assets/5.jpg" @click="msg">
         <person-show :is-show="isShow" @on-close="closeMsg('isShow')" class="person">
            <h3 class="text-center">个人资料展示卡</h3>
+           <el-progress :percentage="50"></el-progress>
            <div class="from-group">
                 <img class="img-circle" src="./assets/5.jpg"/>
                 <button class="btn btn-success">修改</button>

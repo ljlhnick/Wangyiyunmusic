@@ -51,7 +51,6 @@ h3{
 .wrap img{
 	display:block;
 	width:92%;
-	height:100%;
 }
 .wrap p{
 	display:block;position:absolute;bottom:0;

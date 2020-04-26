@@ -64,7 +64,7 @@ div,img,ul,a,p,span{margin:0;padding:0;list-style:none;}
 .slide{
 	width:100%;
 }
-.slide-wrap{
+.slide-wrap, .slide-wrap div{
 	width:100%;
 	height:600px;
 }
