@@ -19,40 +19,64 @@
          </div>
        </div>
        <h3>我的音乐 <span class="ss">{{subdesc.trackCount}}首歌</span><span  class="ss">播放{{subdesc.playCount}}次</span></h3>
-  	   <table class="table table-striped">
-  	     <tr>
-  	     	<th>歌曲标题</th>
-  	     	<th>时长</th>
-  	     	<th>歌手</th>
-  	     	<th>专辑</th>
-          <th>播放</th>
-  	     </tr>
-  	     <tr v-for="item in sheepList">
-  	     	<td>{{item.name}}</td>
-  	     	<td>{{item.id}}</td>
-  	     	<td>{{item.ar[0].name}}</td>
-  	     	<td>{{item.al.name}}</td>
-          <td>
-          <router-link :to="{path:'playDetail',query:{id:item.id,name:item.name,songer:item.ar[0].name}}">
-          <button class="btn btn-success">play</button>
-          </router-link>
-          </td>
-  	     </tr>
-  	   </table>
+       <el-table
+        :data="sheepList"
+        style="width: 100%">
+       <el-table-column
+        scoped="name"
+        label="播放"
+        width="180">
+        <template slot-scope="{row}">
+        <router-link :to="{path:'playDetail',query:{id:row.id,name:row.name,songer:row.ar[0].name}}">
+            <button class="btn btn-success">play</button>
+        </router-link>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="name"
+        label="歌曲标题"
+        width="180">
+      </el-table-column>
+      <el-table-column
+        prop="id"
+        label="时长"
+        width="180">
+      </el-table-column>
+      <el-table-column
+        prop="ar[0].name"
+        label="歌手">
+      </el-table-column>
+      <el-table-column
+        prop="al.name"
+        label="专辑">
+      </el-table-column>
+    </el-table>
+    <el-pagination
+      background
+      @current-change="changePage"
+      layout="prev, pager, next"
+      :total="totalCount">
+    </el-pagination>
   	</div>
   </div>
 </template>
 <script>
-import {formatDate} from './date.js'
+import {formatDate} from './date.js';
+import TableList from '../tableList';
 export default{
+  components:{
+    TableList
+  },
   data(){
     return{
       subdesc:"",
-      sheepList:[]
+      sheepList:[], 
+      totalCount: 0,
+      currentPage: 1
     }
   },
   created(){
-    this.get()
+    this.get();
   },
   methods:{
     get(){
@@ -64,9 +88,25 @@ export default{
           id:this.$route.query.mysongId
         }
       }).then((res)=>{
-        this.subdesc=res.data.playlist
-        this.sheepList=res.data.playlist.tracks
-      	
+        this.subdesc = res.data.playlist;
+        this.sheepList = res.data.playlist.tracks;
+        this.totalCount = res.data.playlist.trackCount;
+      })
+    },
+
+    changePage(currentPage){
+      this.currentPage = currentPage;
+      this.$http({
+        url:'https://api.imjad.cn/cloudmusic/',
+        method:'get',
+        params: {
+          type: 'playlist',
+          id: this.$route.query.mysongId,
+          offest: currentPage
+        }
+      }).then((res)=>{
+        this.subdesc=res.data.playlist;
+        this.sheepList=res.data.playlist.tracks;
       })
     }
   },
