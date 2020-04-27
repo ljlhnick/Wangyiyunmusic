@@ -27,7 +27,18 @@
       </div>
       <div class="col-md-2 col-sm-2 col-xs-2">
         <img class="img-circle" src="./assets/5.jpg" @click="msg">
-        <person-show :is-show="isShow" @on-close="closeMsg('isShow')" class="person">
+
+        <el-dialog title="个人资料" :visible.sync="isShow">
+          <el-avatar src="./assets/5.jpg"></el-avatar>
+          {{nickname}}
+          <el-progress :percentage="50"></el-progress>
+          <span slot="footer">
+            <el-button @click="isShow = false">取 消</el-button>
+            <el-button type="primary" @click="isShow = false">确 定</el-button>
+          </span>
+        </el-dialog>
+
+        <!-- <person-show :is-show="isShow" @on-close="closeMsg('isShow')" class="person">
            <h3 class="text-center">个人资料展示卡</h3>
            <el-progress :percentage="50"></el-progress>
            <div class="from-group">
@@ -58,7 +69,7 @@
                 <input class="col-md-6 col-sm-6 col-xs-6" type="text" placeholder="城市" v-model="city">
           
             </div>
-        </person-show>
+        </person-show> -->
       </div>
     </div>
     <div class="con">
@@ -150,7 +161,9 @@ ul{
   margin-bottom:2rem;
 }
 .header span{
-  display:block;height:50px;line-height:50px;margin:25px 0;color:#ccc;
+  display:block;
+  /* height:50px;line-height:50px; */
+  margin:25px 0;color:#ccc;
 }
 .header ul li{
   height:50px;line-height:50px;margin:15px 0;

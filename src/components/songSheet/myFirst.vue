@@ -19,29 +19,19 @@
          </div>
        </div>
        <h3>我的音乐 <span class="ss">{{subdesc.trackCount}}首歌</span><span  class="ss">播放{{subdesc.playCount}}次</span></h3>
-  	   <table class="table table-striped">
-  	     <tr>
-          <th>播放</th>
-  	     	<th>歌曲标题</th>
-  	     	<th>时长</th>
-  	     	<th>歌手</th>
-  	     	<th>专辑</th>
-  	     </tr>
-  	     <tr v-for="item in sheepList">
-          <td>
-            <router-link :to="{path:'playDetail',query:{id:item.id,name:item.name,songer:item.ar[0].name}}">
-            <button class="btn btn-success">play</button>
-            </router-link>
-          </td>
-  	     	<td>{{item.name}}</td>
-  	     	<td>{{item.id}}</td>
-  	     	<td>{{item.ar[0].name}}</td>
-  	     	<td>{{item.al.name}}</td>
-  	     </tr>
-  	   </table>
        <el-table
-      :data="sheepList"
-      style="width: 100%">
+        :data="sheepList"
+        style="width: 100%">
+       <el-table-column
+        scoped="name"
+        label="播放"
+        width="180">
+        <template slot-scope="{row}">
+        <router-link :to="{path:'playDetail',query:{id:row.id,name:row.name,songer:row.ar[0].name}}">
+            <button class="btn btn-success">play</button>
+        </router-link>
+        </template>
+      </el-table-column>
       <el-table-column
         prop="name"
         label="歌曲标题"
@@ -60,14 +50,6 @@
         prop="al.name"
         label="专辑">
       </el-table-column>
-      <!-- <el-table-column
-        prop="name"
-        label="播放"
-        width="180">
-        <router-link :to="{path:'playDetail',query:{id:item.id,name:item.name,songer:item.ar[0].name}}">
-            <button class="btn btn-success">play</button>
-        </router-link>
-      </el-table-column> -->
     </el-table>
     <el-pagination
       background
