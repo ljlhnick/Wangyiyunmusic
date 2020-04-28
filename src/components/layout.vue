@@ -1,17 +1,22 @@
 <template>
   <div> 
   	<h3>歌单推荐</h3>
-    <div class="row">
-  	  <div class="wrap col-md-3 col-sm-3 col-xs-3" v-for="item in songList">
-      <router-link :to="{path:'/songFirst',query:{songId:item.id}}">
-  	 	   <img :src="item.avatarUrl">
-      </router-link>
-      <p>
-        <span class="pull-right">{{item.desc}}</span>
-      </p>
-  	  </div>
-  	</div>
-
+    <el-row>
+    <el-col :span="8" v-for="(item, index) in songList" :key="index">
+      <el-card :body-style="{ padding: '0px' }">
+          <router-link :to="{path:'/songFirst',query:{songId:item.id}}">
+            <img :src="item.avatarUrl" class="image">
+          </router-link>
+        <div style="padding: 14px;">
+          <span>{{item.desc}}</span>
+          <div class="bottom clearfix">
+            <time class="time">{{ item.id }}</time>
+            <el-button type="text" class="button">操作按钮</el-button>
+          </div>
+        </div>
+      </el-card>
+    </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -47,6 +52,9 @@ h3{
   width:300px;height:300px;
   margin:20px 0;
 
+}
+img{
+  width: 100%;
 }
 .wrap img{
 	display:block;

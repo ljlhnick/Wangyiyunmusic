@@ -19,44 +19,13 @@
          </div>
        </div>
        <h3>我的音乐 <span class="ss">{{subdesc.trackCount}}首歌</span><span  class="ss">播放{{subdesc.playCount}}次</span></h3>
-       <el-table
-        :data="sheepList"
-        style="width: 100%">
-       <el-table-column
-        scoped="name"
-        label="播放"
-        width="180">
-        <template slot-scope="{row}">
-        <router-link :to="{path:'playDetail',query:{id:row.id,name:row.name,songer:row.ar[0].name}}">
-            <button class="btn btn-success">play</button>
-        </router-link>
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="name"
-        label="歌曲标题"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="id"
-        label="时长"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="ar[0].name"
-        label="歌手">
-      </el-table-column>
-      <el-table-column
-        prop="al.name"
-        label="专辑">
-      </el-table-column>
-    </el-table>
-    <el-pagination
-      background
-      @current-change="changePage"
-      layout="prev, pager, next"
-      :total="totalCount">
-    </el-pagination>
+        <table-list :listData="sheepList"></table-list>
+        <el-pagination
+          background
+          @current-change="changePage"
+          layout="prev, pager, next"
+          :total="totalCount">
+        </el-pagination>
   	</div>
   </div>
 </template>
@@ -84,8 +53,9 @@ export default{
         url:'https://api.imjad.cn/cloudmusic/',
         method:'get',
         params: {
-          type:'playlist',
-          id:this.$route.query.mysongId
+          type: 'playlist',
+          id: this.$route.query.mysongId,
+          offest: this.currentPage - 1
         }
       }).then((res)=>{
         this.subdesc = res.data.playlist;
@@ -96,18 +66,7 @@ export default{
 
     changePage(currentPage){
       this.currentPage = currentPage;
-      this.$http({
-        url:'https://api.imjad.cn/cloudmusic/',
-        method:'get',
-        params: {
-          type: 'playlist',
-          id: this.$route.query.mysongId,
-          offest: currentPage
-        }
-      }).then((res)=>{
-        this.subdesc=res.data.playlist;
-        this.sheepList=res.data.playlist.tracks;
-      })
+      this.get();
     }
   },
   filters: {

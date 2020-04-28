@@ -1,17 +1,7 @@
 <template>
   <div id="app">
-    <div class="header row">
-      <h2 class="col-md-2 col-sm-2 col-xs-2 text-center">
-      <router-link :to="{path: '/' }">
-      <span>网易云音乐</span>
-      </router-link></h2>
-      <div class="col-md-5 col-sm-5 col-xs-5">
-          <ul class="navbar navbar-default" >
-            <router-link v-for="item in menuList" :to="{path: item.path}" tag="li" :key="item.id">
-              {{item.name}}
-            </router-link>
-          </ul>
-      </div>
+    <div class="">
+      <!-- 搜索接口暂不支持
       <div class="col-md-3 col-sm-3 col-xs-3">
         <input type="text" class="form-control" placeholder="搜索" v-model="words" @keyup.enter="search(words)"/>
         <person-show :is-show="inputShow" @on-close="closeMsg('inputShow')">
@@ -23,57 +13,40 @@
              </li>
           </ol>
         </person-show>
-        
-      </div>
-      <div class="col-md-2 col-sm-2 col-xs-2">
-        <img class="img-circle" src="./assets/5.jpg" @click="msg">
+      </div> -->
 
         <el-dialog title="个人资料" :visible.sync="isShow">
           <el-avatar src="./assets/5.jpg"></el-avatar>
           {{nickname}}
           <el-progress :percentage="50"></el-progress>
+          <el-input placeholder="昵称" v-model="nickname" clearable></el-input>
+          <el-input placeholder="性别" v-model="sex" clearable></el-input>
+          <el-input placeholder="年龄" v-model="age" clearable></el-input>
+          <el-input placeholder="城市" v-model="city" clearable></el-input>
           <span slot="footer">
             <el-button @click="isShow = false">取 消</el-button>
             <el-button type="primary" @click="isShow = false">确 定</el-button>
           </span>
         </el-dialog>
-
-        <!-- <person-show :is-show="isShow" @on-close="closeMsg('isShow')" class="person">
-           <h3 class="text-center">个人资料展示卡</h3>
-           <el-progress :percentage="50"></el-progress>
-           <div class="from-group">
-                <img class="img-circle" src="./assets/5.jpg"/>
-                <button class="btn btn-success">修改</button>
-            </div>
-           <div class="from-group">
-                <label class="col-md-2 col-sm-2 col-xs-2" v-if="nickname">{{nickname}}</label>
-                <label class="col-md-2 col-sm-2 col-xs-2" v-else>动力在哪儿</label>
-                <input class="col-md-6 col-sm-6 col-xs-6" type="text" placeholder="昵称" v-model="nickname">
-               
-            </div>
-            <div class="from-group">
-                <label class="col-md-2 col-sm-2 col-xs-2" v-if="sex">{{sex}}</label>
-                <label class="col-md-1 col-sm-1 col-xs-1" v-else>女</label>
-                <input class="col-md-6 col-sm-6 col-xs-6" type="text" placeholder="性别" v-model="sex">
-            
-            </div>
-            <div class="from-group">
-                <label class="col-md-2 col-sm-2 col-xs-2" v-if="age">{{age}}</label>
-                <label class="col-md-1 col-sm-1 col-xs-1" v-else>20</label>
-                <input class="col-md-6 col-sm-6 col-xs-6" type="text" placeholder="年龄" v-model="age">
-                
-            </div>
-            <div class="from-group">
-              <label class="col-md-2 col-sm-2 col-xs-2" v-if="city">{{city}}</label>
-                <label class="col-md-1 col-sm-1 col-xs-1" v-else>常德</label>
-                <input class="col-md-6 col-sm-6 col-xs-6" type="text" placeholder="城市" v-model="city">
-          
-            </div>
-        </person-show> -->
-      </div>
     </div>
+    <el-menu default-active="1" class="el-menu-demo" mode="horizontal">
+        <el-menu-item  v-for="(item,index) in menuList" :key="item.id">
+          <router-link :to="{path: item.path}">
+              {{item.name}}
+            </router-link>
+        </el-menu-item>
+        <el-menu-item>
+          <!-- <el-button type="primary" @click="msg">我的</el-button> -->
+          <el-link type="primary" @click="msg">我的</el-link>
+        </el-menu-item>
+        </el-menu>
     <div class="con">
-      <slide-show :slides="slides" :inv="inv"></slide-show>
+      <!-- <slide-show :slides="slides" :inv="inv"></slide-show> -->
+       <el-carousel>
+        <el-carousel-item v-for="(item,index) in slides" :key="index">
+         <img :src="item.src"/>
+        </el-carousel-item>
+      </el-carousel>
         <keep-alive>
           <router-view></router-view>
         </keep-alive>
@@ -85,19 +58,18 @@
 </template>
 
 <script>
-import SlideShow from './components/slide'
-import PersonShow from './components/person'
+import SlideShow from './components/slide';
 export default {
   components:{
-    SlideShow,
-    PersonShow
+    SlideShow
   },
   data(){
     return{
       menuList:[
-        {"id":1,"name":"我的音乐","path":"/mymusic"},
-        {"id":2,"name":"电台","path":"/station"},
-        {"id":3,"name":"歌手","path":"/musicer"}
+        {"id":1,"name":"网易云","path":"/"},
+        {"id":2,"name":"我的音乐","path":"/mymusic"},
+        {"id":3,"name":"电台","path":"/station"},
+        {"id":4,"name":"歌手","path":"/musicer"}
       ],
       slides: [
         {
@@ -153,28 +125,6 @@ export default {
 ul{
   list-style:none;
 }
-.header{
-  width:100%;
-  height:100px;
-  background:#242424;
-  color:#ccc;
-  margin-bottom:2rem;
-}
-.header span{
-  display:block;
-  /* height:50px;line-height:50px; */
-  margin:25px 0;color:#ccc;
-}
-.header ul li{
-  height:50px;line-height:50px;margin:15px 0;
-  font-size:25px;
-}
-.header input{
-  height:50px;line-height:50px;margin:25px 0;
-}
-.header .img-circle{
-  width:100px;height:100px;border-radius:50%;margin-left:20px;
-}
 .footer{
   width:100%;
   height:50px;
@@ -192,5 +142,15 @@ ul{
 }
 .person .from-group span{
   color:red;
+}
+
+
+/* elementUI */
+.el-carousel, .el-carousel__container, .el-carousel__item{
+  height: 400px !important;
+}
+.el-carousel img{
+  width: 100%;
+  height: 100%;
 }
 </style>
