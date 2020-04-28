@@ -20,39 +20,31 @@
   	   </div>
 
   	   <h3>歌曲推荐 <span class="ss">{{subdesc.trackCount}}首歌</span><span class="ss">播放{{subdesc.playCount}}次</span></h3>
-
-  	   <table class="table table-bordered table-striped table-hover">
-  	     <tr>
-  	     	<th>歌曲名</th>
-  	     	<th>歌曲id</th>
-  	     	<th>歌手</th>
-  	     	<th>专辑</th>
-  	     	<th>播放</th>
-  	     </tr>
-  	     
-  	     <tr v-for="item in sheepList">
-  	     	<td>{{item.name}}</td>
-          <td>{{item.id}}</td>
-          <td>{{item.ar[0].name}}</td>
-          <td>{{item.al.name}}</td>
-  	     	<td>
-  	     	<router-link :to="{path:'/playDetail',query:{id:item.id,name:item.name,songer:item.ar[0].name}}">
-  	     	<button class="btn btn-success">play</button>
-  	     	</router-link>
-  	     	</td></tr>
-  	   </table>
+        <table-list :listData="sheepList"></table-list>
+        <el-pagination
+          background
+          @current-change="changePage"
+          layout="prev, pager, next"
+          :total="totalCount">
+        </el-pagination>
   	</div>
   </div>
 </template>
 <script>
-import {formatDate} from './date.js'
+import {formatDate} from './date.js';
+import TableList from '../tableList';
 export default{
   data(){
     return{
       subdesc:"",
       sheepList:[],
-      tid:""
+      tid:"",
+      totalCount: 0,
+      currentPage: 1
     }
+  },
+  components: {
+    TableList
   },
   created(){
     this.get()
@@ -66,14 +58,19 @@ export default{
         url:'https://api.imjad.cn/cloudmusic/',
         method:'get',
         params: {
-          type:'playlist',
-          id:this.$route.query.songId
+          type: 'playlist',
+          id: this.$route.query.songId,
+          offest: this.currentPage-1
         }
       }).then((res)=>{
-        this.subdesc=res.data.playlist
-        //console.log(res.data.playlist)
-        this.sheepList=res.data.playlist.tracks
+        this.subdesc= res.data.playlist;
+        this.sheepList = res.data.playlist.tracks;
+        this.totalCount = res.data.playlist.trackCount;
       });
+    },
+    changePage(currentPage){
+      this.currentPage = currentPage;
+      this.get();
     }
   },
   watch:{

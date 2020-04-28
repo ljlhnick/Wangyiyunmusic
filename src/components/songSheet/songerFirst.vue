@@ -13,38 +13,21 @@
   	   </div>
 
   	   <h3>歌手推荐 <span class="ss">{{artist.albumSize}}张专辑</span><span  class="ss">{{artist.mvSize}}</span><span class="ss">热门歌曲{{artist.musicSize}}首</span></h3>
-
-  	   <table class="table table-bordered table-striped table-hover">
-  	     <tr>
-  	     	<th>歌曲名</th>
-  	     	<th>歌曲id</th>
-  	     	<th>歌手</th>
-  	     	<th>专辑</th>
-          <th>Mv</th>
-  	     	<th>播放</th>
-  	     </tr>
-  	     <tr v-for="item in List">
-  	     	<td>{{item.name}}</td>
-          <td>{{item.id}}</td>
-          <td>{{item.ar[0].name}}</td>
-          <td>{{item.al.name}}</td>
-          <td>{{item.mv}}</td>
-  	     	<td>
-  	     	<router-link :to="{path:'/playDetail',query:{id:item.id,name:item.name,songer:item.ar[0].name,mv:item.mv}}">
-  	     	<button class="btn btn-success">play</button>
-  	     	</router-link>
-  	     	</td></tr>
-  	   </table>
+       <table-list :listData="List"></table-list>
   	</div>
   </div>
 </template>
 <script>
+import TableList from '../tableList';
 export default{
   data(){
     return{
-      artist:"",
-      List:[],
+      artist: "",
+      List: [],
     }
+  },
+  components: {
+    TableList
   },
   created(){
     this.get()
@@ -57,13 +40,12 @@ export default{
         url:'https://api.imjad.cn/cloudmusic/',
         method:'get',
         params: {
-          type:'artist',
-          id:this.$route.query.mid
+          type: 'artist',
+          id: this.$route.query.mid
         }
       }).then((res)=>{
-        this.artist=res.data.artist
-        this.List=res.data.hotSongs
-        //console.log(this.List)
+        this.artist = res.data.artist
+        this.List = res.data.hotSongs
       });
     }
   },
