@@ -8,6 +8,7 @@
   	     <div class="col-md-8 col-sm-8 col-xs-8 right">
   	       <h2>{{artist.name}}</h2>
   	       <p>标签 <button class="btn btn-info" v-for="item in artist.alias">{{item}}</button></p>
+           <P>出版时间 {{artist.publishTime | formatDate}}</p>
   	       <p class="desc">{{artist.briefDesc}}</p>
   	     </div>
   	   </div>
@@ -18,6 +19,7 @@
   </div>
 </template>
 <script>
+import {formatDate, formatTime} from './date.js';
 import TableList from '../tableList';
 export default{
   data(){

@@ -19,9 +19,11 @@ export function formatDate (date, fmt) {
 };
 
 export function formatTime (millSeconds) {
-    let Mins = Math.floor(millSeconds/60000);
-    let Seconds = Math.floor((millSeconds - Mins*60000)/1000);
-    return `${Mins} min ${Seconds} s`;
+    let Days = Math.floor(millSeconds/86400000);
+    let Hours = Math.floor((millSeconds - Days*86400000)/3600000);
+    let Mins = Math.floor((millSeconds - Days*86400000 - Hours*3600000)/60000);
+    let Seconds = Math.floor((millSeconds - Days*86400000 - Hours*3600000 - Mins*60000)/1000);
+    return `${Days} days${Hours} hours ${Mins} mins ${Seconds} seconds`;
 };
 
 function padLeftZero (str) {
