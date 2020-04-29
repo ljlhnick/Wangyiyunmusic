@@ -44,6 +44,13 @@ add tableList component but not use
 replaced by carousel, navMenu, card component 
 use tableList component in songFirst.vue songerFirst.vue myFirst.vue
 add pagination and paging function but api not support 
+```
+<template slot-scope="{row}">
+    <router-link :to="{path:'playDetail',query:{id:row.id,name:row.name,songer:row.ar[0].name,mv:row.mv}}">
+         <button class="btn btn-success">play</button>
+     </router-link>
+</template>
+```
 
 ### change Log on 2020/04/29 
 add backToTop
