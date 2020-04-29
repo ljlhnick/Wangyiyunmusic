@@ -54,6 +54,7 @@
     <div class="footer">
       <h2 class="text-center">force By Lj</h2>
     </div>
+     <el-backtop></el-backtop>
   </div>
 </template>
 

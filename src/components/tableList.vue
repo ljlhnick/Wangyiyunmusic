@@ -20,7 +20,7 @@
         </el-table-column>
         <el-table-column
         prop="id"
-        label="时长"
+        label="id"
         width="180">
         </el-table-column>
         <el-table-column
@@ -31,6 +31,10 @@
         prop="al.name"
         label="专辑">
         </el-table-column>
+        <el-table-column
+        prop="al.picUrl"
+        label="专辑图片">
+        </el-table-column>
         </el-table>
     </div>
 </template>
@@ -38,6 +42,7 @@
 export default{
   data(){
     return{
+
     }
   },
 
